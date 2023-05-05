@@ -1,4 +1,5 @@
 import './App.css';
+import {LoginButton} from './login.js';
 import { useState } from 'react';
 import axios from 'axios';
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -7,7 +8,6 @@ import { useAuth0 } from '@auth0/auth0-react';
 
 function App() {
 
-  const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
 
   const [usuario, setUsuario] = useState("");
   const [marca, setMarca] = useState("");
@@ -16,6 +16,7 @@ function App() {
   const [años, setAños] = useState(0);
   const [objetivos, setObjetivos] = useState("");
   const [id, setId] = useState(0);
+
 
   const [editar,setEditar] = useState(false);
   
@@ -52,15 +53,17 @@ const editarUsuario = (val) => {
   setObjetivos(val.objetivos);
   setId(val.id);
 }
- 
+
 
   return (
     <div className="datos">
     <div className="App">
     <div className="Lista">
 
-    <button onClick={()=> loginWithRedirect()}>Login</button>
-    
+  
+
+    <LoginButton/>  
+
    
     
     {
