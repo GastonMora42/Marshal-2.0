@@ -1,180 +1,204 @@
-import './App.css';
-import {LoginButton} from './login.js';
-import { useState } from 'react';
-import axios from 'axios';
+import { LoginButton } from "./login.js";
+import { LogoutButton } from "./logout.js";
+import { Profile } from "./profile.js";
+import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useAuth0 } from '@auth0/auth0-react';
+import { useAuth0 } from "@auth0/auth0-react";
+import { useState } from "react";
+import Badge from "react-bootstrap/Badge";
 
+import Container from "react-bootstrap/Container";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
+import NavDropdown from "react-bootstrap/NavDropdown";
+import Button from "react-bootstrap/Button";
+import Hub from "./routes/hub.js";
+import Carrousel from "./Carrousel.js";
+
+import { Link } from "react-router-dom";
 
 function App() {
-
-
-  const [usuario, setUsuario] = useState("");
-  const [marca, setMarca] = useState("");
-  const [rol, setRol] = useState("");
-  const [alcanze, setAlcanze] = useState(0);
-  const [años, setAños] = useState(0);
-  const [objetivos, setObjetivos] = useState("");
-  const [id, setId] = useState(0);
-
-
-  const [editar,setEditar] = useState(false);
-  
-
-  const [usuariosList,setUsuarios] = useState([]);
-
-  const add = () => {
-    axios.post('http://localhost:3001/create', {
-      usuario: usuario, 
-      marca: marca,
-      rol: rol,
-      alcanze: alcanze,
-      años: años,
-      objetivos: objetivos,
-    }).then(() => {
-      alert("Usuario creado exitosamente");
-    });
- };
-
- const getUsuarios = () => {
-  axios.get('http://localhost:3001/usuarios').then((response) => {
-    setUsuarios(response.data);
-    alert("Usuarios listados exitosamente");
-  });
-}; 
-
-const editarUsuario = (val) => {
-  setEditar = true;
-  setUsuario(val.usuario);
-  setMarca(val.marca);
-  setRol(val.rol);
-  setAlcanze(val.alcanze);
-  setAños(val.años);
-  setObjetivos(val.objetivos);
-  setId(val.id);
-}
-
+  const { user, isAuthenticated, isLoading } = useAuth0();
 
   return (
-    <div className="datos">
-    <div className="App">
-    <div className="Lista">
+    <body class="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-12">
+      <Navbar collapseOnSelect expand="lg" bg="ligth" variant="ligth">
+        <Container>
+          <Navbar.Brand>Marshal</Navbar.Brand>
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Collapse id="responsive-navbar-nav">
+            <Nav className="me-auto">
+              <NavDropdown title="Soluciones" id="collasible-nav-dropdown">
+                <NavDropdown.Item href="#action/3.1">
+                  Creacion de contenido automatico
+                </NavDropdown.Item>
+                <NavDropdown.Item href="#action/3.1">
+                  Estrategias publicitarias y SEO
+                </NavDropdown.Item>
+                <NavDropdown.Item href="#action/3.3">
+                  Planning mensual para redes
+                </NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item href="#action/3.4">
+                  Combina todo y aumenta tus ventas
+                </NavDropdown.Item>
+              </NavDropdown>
+              <NavDropdown title="Herramientas" id="collasible-nav-dropdown">
+                <NavDropdown.Item href="#action/3.1">
+                  <Link
+                    className="text-decoration-none text-secondary"
+                    to="/rb"
+                  >
+                    Remover fondo
+                  </Link>
+                </NavDropdown.Item>
+                <NavDropdown.Item href="#action/3.2">
+                  Crear contenido automatico
+                </NavDropdown.Item>
+                <NavDropdown.Item href="#action/3.3">
+                  Editor con IA
+                </NavDropdown.Item>
+                <NavDropdown.Item href="#action/3.3">
+                  Programa tus publicaciones
+                </NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item href="#action/3.4">
+                  Comienza tu proyecto
+                </NavDropdown.Item>
+              </NavDropdown>
+              <Nav.Link>Precios / Planes</Nav.Link>
+            </Nav>
+            <Nav>
+              {isAuthenticated ? (
+                <>
+                  <Nav.Link>
+                    <Link
+                      className="text-decoration-none text-secondary"
+                      to="/Formulario"
+                    >
+                      Comienza un nuevo proyecto
+                    </Link>
+                  </Nav.Link>
+                  <Nav.Link to="/Hub">
+                    <Link
+                      className="text-decoration-none text-secondary"
+                      to="/Hub"
+                    >
+                      Hub Estudio
+                    </Link>
+                  </Nav.Link>
+                  <LogoutButton />
+                  <Profile />
+                </>
+              ) : (
+                <LoginButton />
+              )}
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
 
-  
+      <br></br>
+      <br></br>
 
-    <LoginButton/>  
-
-   
-    
-    {
-      usuariosList.map((val,key) => {
-        return <div className="usuario">
-          <h3>Usuario: {val.usuario}</h3>
-          <h3>Marca: {val.marca}</h3>
-          <h3>Rol: {val.rol}</h3>
-          <h3>Alcanze: {val.alcanze}</h3>
-          <h3>Años: {val.años}</h3>
-          <h3>Objetivos: {val.objetivos}</h3>
+      <div class="row no-gutters px-5">
+        <div class="col-12 col-sm-12 col-md-8 col-lg-8 col-xl-7 pe-5">
+          <h1 class="display-4">Bienvenido a Marshal</h1>
+          <br></br>
+          <h2 class="">
+            Tu community manager con Inteligencia artificial, que te ayudará a
+            gestionar tus proyectos de marketing digital
+          </h2>
+          <br></br>
+          <br></br>
+          <br></br>
+          <div class="card shadow">
+            <div class="card-header">
+              <h4>
+                Automatiza tus publicaciones
+                <Badge className="ms-3" bg="success">
+                  New
+                </Badge>
+              </h4>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">
+                Prueba nuestras herramientas impulsadas por IA
+              </h5>
+              <p class="card-text">
+                Con Marshal podrás gestionar tus proyectos en piloto automatico
+              </p>
+              <a href="#" class="btn btn-dark">
+                Marshal labs
+              </a>
+            </div>
+          </div>
+          <br></br>
         </div>
-      })
-    }
-    </div>
-    </div>
+        <div class="col-12 col-sm-12 col-md-4 col-lg-8 col-xl-5">
+          <img
+            src="https://static.vecteezy.com/system/resources/previews/022/774/319/original/space-wallpaper-rocket-launch-explosion-with-fire-exploding-illustration-ai-generative-free-photo.jpg"
+            class="shadow border rounded img-fluid"
+            width="800px"
+            height="2000px"
+          ></img>
+          <div class="card-body">
+            <h3 class="card-title mt-2 d-block text-center mb-1">
+              Las soluciones de IA que estabas buscando para tu proyecto
+            </h3>
+            <p class="card-text d-block text-center">
+              Impulsa tu proyecto en automatico con Marshal
+            </p>
+            <a href="#" class="btn btn-dark d-block text-center">
+              Comenzar ahora
+            </a>
+          </div>
+        </div>
+      </div>
 
-    <div className="card text-center">
-  <div className="card-header">
-  Cuentanos sobre ti y tu marca
-  </div>
-  <div className="card-body">
-  <div className="form-control form-control-lg">
-  <span className="input-group-text" id="basic-addon1">Usuario:</span>
-  <input type="text"
-  onChange={(event) => {
-        setUsuario(event.target.value);
-      }}
-     className="form-control" placeholder="Ingrese un nombre de usuario" aria-label="Nombre de usuario" aria-describedby="basic-addon1"/>
-</div>
+      <br></br>
+      <br></br>
 
-<div className="input-group mb-3">
-  <span className="input-group-text" id="basic-addon1">Marca:</span>
-  <input type="text"
-  onChange={(event) => {
-        setMarca(event.target.value);
-      }}
-     className="form-control" placeholder="Ingrese el nombre de su marca" aria-label="Nombre de su marca" aria-describedby="basic-addon1"/>
-</div>
+      <div class="text-center d-block card row">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+          <h4>Empieza Gratis hoy mismo</h4>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">
+            Comenza con nuestra prueba gratuita de 15 dias
+          </h5>
+          <p class="card-text">
+            Selecciona el plan que mas se ajuste a tus necesidades
+          </p>
+          <a href="#" class="btn btn-dark">
+            Empezar prueba GRATIS
+          </a>
+        </div>
+      </div>
 
-<div class="input-group mb-3">
-  <label class="input-group-text" 
-      for="inputGroupSelect01">Rol</label>
-  <select class="form-select" 
-  onChange={(event) => {
-        setRol(event.target.value);
-      }}
-      id="inputGroupSelect01">
-    <option selected>Escoga su rol principal</option>
-    <option value="Dueño">Dueño</option>
-    <option value="Community Managger">Community Managger</option>
-    <option value="Diseñador">Diseñador</option>
-    <option value="Creador de contenido">Creador de contenido</option>
-    <option value="Gerente de marketing">Gerente de marketing</option>
-    <option value="Director general">Director general</option>
-    <option value="Publicista">Publicista</option>
-    <option value="Desarrollador">Desarrollador</option>
-    <option value="Otros">Otros</option>
-  </select>
-</div>
+      <br></br>
+      <br></br>
 
-<div className="input-group mb-3">
-  <span className="input-group-text" id="basic-addon1">Años:</span>
-  <input type="number"
-  onChange={(event) => {
-        setAños(event.target.value);
-      }}
-     className="form-control" placeholder="Años de experiencia" aria-label="Años" aria-describedby="basic-addon1"/>
-</div>
-
-
-<div className="input-group mb-3">
-  <span className="input-group-text" id="basic-addon1">Alcanze:</span>
-  <input type="text"
-  onChange={(event) => {
-        setAlcanze(event.target.value);
-      }}
-     className="form-control" placeholder="Ingrese el alcanze de su marca" aria-label="Alcanze" aria-describedby="basic-addon1"/>
-</div>
-
-
-<div class="input-group mb-3">
-  <label class="input-group-text" 
-      for="inputGroupSelect01">Objetivos</label>
-  <select class="form-select" 
-  onChange={(event) => {
-        setObjetivos(event.target.value);
-      }}
-      id="inputGroupSelect01">
-    <option selected>Selecciona una opcion</option>
-    <option value="Aumentar seguidores en instagram">Aumentar seguidores en instagram</option>
-    <option value="Crear y mantener imagen de marca">Crear y mantener imagen de marca</option>
-    <option value="Captar clientes potenciales">Captar clientes potenciales</option>
-    <option value="Expandir mi alcanze y llegar a nuevos clientes">Expandir mi alcanze y llegar a nuevos clientes</option>
-    <option value="Otros">Otros</option>
-  </select>
-</div>
-      
-
-<div class="d-grid gap-2 col-6 mx-auto">
-  <button class="btn btn-primary" type="button"  onClick={add}>Guardar y continuar</button>
-</div>
-
-  </div>
-  <div class="card-footer text-muted">
-  </div>
-  Recuerda ser especifico para poder brindarte un mejor servicio
-</div>
-    </div>
-   );
-
-   };
+      <footer class="footer py-3 bg-dark d-block">
+        <div class="container">
+          <span class="text-muted">Marshal 2023 ©</span>
+          <span class="text-muted ps-3">Todos los derechos reservados</span>
+          <Link
+            className="text-decoration-none text-secondary float-end"
+            to="/Hub"
+          >
+            Terminos y condiciones
+          </Link>
+          <Link
+            className="text-decoration-none text-secondary float-end pe-5"
+            to="/Hub"
+          >
+            Politicas de privacidad
+          </Link>
+        </div>
+      </footer>
+    </body>
+  );
+}
 
 export default App;
